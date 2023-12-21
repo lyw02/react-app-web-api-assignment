@@ -17,8 +17,8 @@ const ReviewSchema = new Schema({
   url: { type: String },
 });
 
-ReviewSchema.statics.findByMovieDBId = function (id) {
-  return this.findOne({ id: id });
+ReviewSchema.statics.findAll = function () {
+  return this.find();
 };
 
 export default mongoose.model("Reviews", ReviewSchema);

@@ -56,6 +56,8 @@ export const getMovieReviews = (id) => {
     .then((json) => {
       // console.log(json.results);
       return json.results;
+    }).catch((error) => {
+      throw error;
     });
 };
 

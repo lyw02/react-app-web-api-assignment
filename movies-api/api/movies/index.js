@@ -1,7 +1,16 @@
 import movieModel from "./movieModel";
 import asyncHandler from "express-async-handler";
 import express from "express";
-import { getUpcomingMovies, getGenres } from "../tmdb-api";
+import {
+  getUpcomingMovies,
+  getGenres,
+  getMovieCredits,
+  getActorDetails,
+  getActorMovieCredits,
+  getSimilarMovies,
+  getTrendingMovies,
+  getMoviesByKeyword,
+} from "../tmdb-api";
 
 const router = express.Router();
 
@@ -49,6 +58,7 @@ router.get(
   })
 );
 
+// Get upcoming movies
 router.get(
   "/tmdb/upcoming",
   asyncHandler(async (req, res) => {
@@ -63,6 +73,66 @@ router.get(
   asyncHandler(async (req, res) => {
     const genres = await getGenres();
     res.status(200).json(genres);
+  })
+);
+
+// Get credits by movie id
+router.get(
+  "/:id/credits",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const credits = await getMovieCredits(id);
+    res.status(200).json(credits);
+  })
+);
+
+// Get actor details
+router.get(
+  "/actor/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const actor = await getActorDetails(id);
+    res.status(200).json(actor);
+  })
+);
+
+// Get actor movie credits
+router.get(
+  "/actor/:id/movie_credits",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const actorMovieCredits = await getActorMovieCredits(id);
+    res.status(200).json(actorMovieCredits);
+  })
+);
+
+// Get similar movies by id
+router.get(
+  "/:id/similar",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const similarMovies = await getSimilarMovies(id);
+    res.status(200).json(similarMovies);
+  })
+);
+
+// Get trending movies
+router.get(
+  "/trending/:time_window",
+  asyncHandler(async (req, res) => {
+    const time_window = req.params.time_window;
+    const trendingMovies = await getTrendingMovies(time_window);
+    res.status(200).json(trendingMovies);
+  })
+);
+
+// Get search results
+router.get(
+  "/search/:keyword",
+  asyncHandler(async (req, res) => {
+    const keyword = req.params.keyword;
+    const results = await getMoviesByKeyword(keyword);
+    res.status(200).json(results);
   })
 );
 

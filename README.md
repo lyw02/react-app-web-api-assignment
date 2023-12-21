@@ -47,6 +47,13 @@ Give an overview of your web API design, perhaps similar to the following:
 
 - /api/reviews/{movieId}/mongodb | GET | Gets reviews of a movie from MongoDB
 - /api/reviews/{movieId}/tmdb | GET | Gets reviews of a movie from TMDB
+- /api/reviews/{movieId} | POST | Creates new review of a movie, stores in MongoDB
+- /api/reviews/{reviewId} | PUT | Updates a review
+- /api/reviews/{reviewId} | DELETE | Deletes a review
+
+- /api/favorites | GET | Gets all favorite movies of current user
+- /api/favorites/{movieId} | POST | Add a movie to favorite movies of current user
+- /api/favorites/{movieId} | DELETE | Deletes a movie from favorite movies of current user
 
 If you have your API design on an online platform or graphic, please link to it (e.g. [Swaggerhub](https://app.swaggerhub.com/)).
 

@@ -5,6 +5,7 @@ import defaultErrHandler from './errHandler'
 import usersRouter from './api/users';
 import moviesRouter from './api/movies';
 import reviewsRouter from './api/reviews';
+import favoritesRouter from './api/favorites';
 import authenticate from './authenticate';
 import './db';
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/users', usersRouter);
 app.use('/api/movies', authenticate,  moviesRouter);
 app.use('/api/reviews', authenticate, reviewsRouter);
+app.use('/api/favorites', authenticate, favoritesRouter);
 // app.use('/api/movies', moviesRouter); //ADD THIS BEFORE THE DEFAULT ERROR HANDLER.
 app.use(defaultErrHandler);
 

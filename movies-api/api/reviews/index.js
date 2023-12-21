@@ -28,7 +28,7 @@ router.get(
 
 // Create new review
 router.post(
-  "/:id",
+  "/:id", // movie id
   asyncHandler(async (req, res) => {
     try {
       if (!req.body.content) {
@@ -47,12 +47,47 @@ router.post(
   })
 );
 
+// Update a review by review id
+router.put("/:_id", async (req, res) => {
+  if (req.body._id) {
+    delete req.body._id;
+  }
+  req.body.updated_at = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+  const result = await Review.updateOne(
+    {
+      _id: req.params._id,
+    },
+    req.body
+  );
+  if (result.matchedCount) {
+    res.status(200).json({ code: 200, msg: "Review Updated Sucessfully" });
+  } else {
+    res.status(404).json({ code: 404, msg: "Unable to Update Review" });
+  }
+});
+
+// Delete a review by review id
+router.delete("/:_id", async (req, res) => {
+  try {
+    const result = await Review.deleteOne({ _id: req.params._id });
+
+    if (result.deletedCount > 0) {
+      res.status(200).json({ code: 200, msg: "Review Deleted Successfully" });
+    } else {
+      res.status(404).json({ code: 404, msg: "Review Not Found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ code: 500, msg: "Internal Server Error" });
+  }
+});
+
 async function createReview(req, res) {
   req.body.author = req.user.username;
   req.body.author_details.username = req.user.username;
   req.body.movie_id = req.params.id;
-  req.body.created_at = dayjs();
-  req.body.updated_at = dayjs();
+  req.body.created_at = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+  req.body.updated_at = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
   await Review.create(req.body);
   res.status(201).json({ success: true, msg: "User successfully created." });
 }

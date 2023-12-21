@@ -38,7 +38,7 @@ router.post(
   "/:id", // movie id
   asyncHandler(async (req, res) => {
     try {
-      if (!req.body.id) {
+      if (!req.params.id) {
         return res
           .status(400)
           .json({ success: false, msg: "Movie id required." });

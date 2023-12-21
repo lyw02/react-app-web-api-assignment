@@ -6,6 +6,7 @@ import movies from "./movies";
 import User from "../api/users/userModel";
 import Movie from "../api/movies/movieModel";
 import Review from "../api/reviews/reviewModel";
+import Favorite from "../api/favorites/favoriteModel";
 
 async function main() {
   if (process.env.NODE_ENV !== "development") {
@@ -23,9 +24,13 @@ async function main() {
   await Review.collection
     .drop()
     .catch((err) => console.log("Review collection not found"));
+  await Favorite.collection
+    .drop()
+    .catch((err) => console.log("Favorite collection not found"));
   await User.create(users);
   await Movie.create(movies);
   await Review.create();
+  await Favorite.create();
   console.log("Database initialised");
   console.log(`${users.length} users loaded`);
   console.log(`${movies.length} movies loaded`);

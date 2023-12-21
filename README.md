@@ -45,6 +45,9 @@ Give an overview of your web API design, perhaps similar to the following:
 - /api/movies/trending/{timeWindow} | GET | Gets trending movies by time window (day or week)
 - /api/movies/search/{keyword} | GET | Gets movies by searching keyword
 
+- /api/reviews/{movieId}/mongodb | GET | Gets reviews of a movie from MongoDB
+- /api/reviews/{movieId}/tmdb | GET | Gets reviews of a movie from TMDB
+
 If you have your API design on an online platform or graphic, please link to it (e.g. [Swaggerhub](https://app.swaggerhub.com/)).
 
 ## Security and Authentication

@@ -30,9 +30,8 @@ const SignUpPage = props => {
       alert(message);
     }
     if (validPassword && password === passwordAgain) {
-      let registerStatus = await context.register(userName, password);
+      await context.register(userName, password);
       setRegistered(true);
-      registerStatus ? alert("Register suscess") : alert("Register failed");
     }
   }
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from 'react-router-dom';
 import ActorDetails from "../components/actorDetails";
 import PageTemplate from "../components/templateActorPage";
-import { getActorDetails, getActorMovieCredits } from '../api/tmdb-api'
+import { getActorDetails, getActorMovieCredits } from '../api'
 import { useQuery } from "react-query";
 import Spinner from '../components/spinner'
 

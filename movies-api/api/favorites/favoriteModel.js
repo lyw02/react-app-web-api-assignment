@@ -10,4 +10,13 @@ const FavoriteSchema = new Schema({
 // Compound index
 FavoriteSchema.index({ user_id: 1, movie_id: 1 }, { unique: true });
 
+FavoriteSchema.statics.findAllByUserId = async function (userId) {
+  try {
+    return await FavoritesModel.find({ user_id: userId });
+  } catch (error) {
+    console.error('Error finding favorites:', error.message);
+    throw error;
+  }
+};
+
 export default mongoose.model('Favorites', FavoriteSchema);

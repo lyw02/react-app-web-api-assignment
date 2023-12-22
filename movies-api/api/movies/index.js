@@ -60,19 +60,21 @@ router.get(
 
 // Get upcoming movies
 router.get(
-  "/tmdb/upcoming",
+  "/upcoming/list",
   asyncHandler(async (req, res) => {
     const upcomingMovies = await getUpcomingMovies();
     res.status(200).json(upcomingMovies);
+    return res;
   })
 );
 
 // Get genres
 router.get(
-  "/tmdb/genres",
+  "/genres/list",
   asyncHandler(async (req, res) => {
     const genres = await getGenres();
     res.status(200).json(genres);
+    // return res;
   })
 );
 

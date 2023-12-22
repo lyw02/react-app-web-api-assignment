@@ -1,6 +1,7 @@
+const baseUrl = "127.0.0.1:8080/api";
 const apiKey = process.env.REACT_APP_TMDB_KEY;
 
-export const getMovies = (page=1) => {
+export const getMovies = (page = 1) => {
   return fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&include_adult=false&include_video=false&page=${page}`
   )
@@ -18,7 +19,7 @@ export const getMovies = (page=1) => {
 export const getMovie = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`)
+  return fetch(`${baseUrl}/movies/${id}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
@@ -31,13 +32,9 @@ export const getMovie = (args) => {
 };
 
 export const getGenres = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`
-  )
+  return fetch(`${baseUrl}/movies/genres/list`)
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
+      console.log(response.body);
       return response.json();
     })
     .catch((error) => {
@@ -63,17 +60,27 @@ export const getMovieImages = ({ queryKey }) => {
 };
 
 export const getMovieReviews = (id) => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${apiKey}`
+  const records = [];
+  fetch(
+    // from tmdb
+    `${baseUrl}/movies/${id}/tmdb`
   )
     .then((res) => res.json())
     .then((json) => {
-      // console.log(json.results);
-      return json.results;
+      records += json.results;
     });
+  fetch(
+    // from mongodb
+    `${baseUrl}/movies/${id}/mongodb`
+  )
+    .then((res) => res.json())
+    .then((json) => {
+      records += json.results;
+    });
+  return records;
 };
 
-export const getUpcomingMovies = (page=1) => {
+export const getUpcomingMovies = (page = 1) => {
   return fetch(
     `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=${page}`
   )
@@ -91,9 +98,7 @@ export const getUpcomingMovies = (page=1) => {
 export const getMovieCredits = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
-  )
+  return fetch(`${baseUrl}/movies/${id}/credits`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
@@ -108,9 +113,7 @@ export const getMovieCredits = (args) => {
 export const getActorDetails = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/person/${id}?api_key=${apiKey}&language=en-US`
-  )
+  return fetch(`${baseUrl}/movies/actor/${id}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
@@ -125,9 +128,7 @@ export const getActorDetails = (args) => {
 export const getActorMovieCredits = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${apiKey}&language=en-US`
-  )
+  return fetch(`${baseUrl}/movies/actor/${id}/movie_credits`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
@@ -159,9 +160,7 @@ export const getActorImages = ({ queryKey }) => {
 export const getSimilarMovies = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}&language=en-US&page=1`
-  )
+  return fetch(`${baseUrl}/movies/${id}/similar`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
@@ -194,6 +193,19 @@ export const getMoviesByKeyword = (keyword, page) => {
   return fetch(
     `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-U&query=${keyword}&page=${page}`
   )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getFavorites = () => {
+  return fetch(`${baseUrl}/favorites`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);

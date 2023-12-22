@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import PageTemplate from "../components/templateMovieListPage";
-import { getTrendingMovies } from "../api/tmdb-api";
+import { getTrendingMovies } from "../api";
 import AddToMustWatchIcon from "../components/cardIcons/addToMustWatchIcon";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";

@@ -3,7 +3,7 @@ import asyncHandler from "express-async-handler";
 import express from "express";
 import Review from "./reviewModel";
 import { getMovieReviews } from "../tmdb-api";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 
 const router = express.Router();
 
@@ -83,11 +83,6 @@ router.delete("/:_id", async (req, res) => {
 });
 
 async function createReview(req, res) {
-  req.body.author = req.user.username;
-  req.body.author_details.username = req.user.username;
-  req.body.movie_id = req.params.id;
-  req.body.created_at = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-  req.body.updated_at = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
   await Review.create(req.body);
   res.status(201).json({ success: true, msg: "User successfully created." });
 }

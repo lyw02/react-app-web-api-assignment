@@ -2,7 +2,7 @@ const baseUrl = "http://127.0.0.1:8080/api";
 const token = localStorage.getItem("token");
 
 export const getMovies = async (page = 1) => {
-  const response = await fetch(`${baseUrl}/movies/?page=${page}`, {
+  const response = await fetch(`${baseUrl}/movies?page=${page}`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -62,25 +62,39 @@ export const getMovieImages = async (args) => {
   return data;
 };
 
-export const getMovieReviews = (id) => {
-  const records = [];
-  fetch(
-    // from tmdb
-    `${baseUrl}/movies/${id}/tmdb`
-  )
-    .then((res) => res.json())
-    .then((json) => {
-      records += json.results;
-    });
-  fetch(
-    // from mongodb
-    `${baseUrl}/movies/${id}/mongodb`
-  )
-    .then((res) => res.json())
-    .then((json) => {
-      records += json.results;
-    });
-  return records;
+export const getMovieReviews = async (id) => {
+  const responseMongo = await fetch(`${baseUrl}/reviews/${id}/mongodb`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const mongoData = await responseMongo.json();
+
+  const responseTmdb = await fetch(`${baseUrl}/reviews/${id}/tmdb`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const tmdbData = await responseTmdb.json();
+
+  return [...mongoData, ...tmdbData];
+};
+
+export const createReview = async (username, id, content) => {
+  const response = await fetch(`${baseUrl}/reviews/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "post",
+    body: { author: username, movie_id: id, content: content },
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getUpcomingMovies = async (page = 1) => {
@@ -166,24 +180,30 @@ export const getSimilarMovies = async (args) => {
 export const getTrendingMovies = async (args, page) => {
   const [, timeWindowPart] = args.queryKey;
   const { timeWindow } = timeWindowPart;
-  const response = await fetch(`${baseUrl}/movies/trending/${timeWindow}/?page=${page}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "get",
-  });
+  const response = await fetch(
+    `${baseUrl}/movies/trending/${timeWindow}/?page=${page}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "get",
+    }
+  );
   const data = await response.json();
   return data;
 };
 
 export const getMoviesByKeyword = async (keyword, page) => {
-  const response = await fetch(`${baseUrl}/movies/search/${keyword}/?page=${page}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    method: "get",
-  });
+  const response = await fetch(
+    `${baseUrl}/movies/search/${keyword}/?page=${page}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      method: "get",
+    }
+  );
   const data = await response.json();
   return data;
 };

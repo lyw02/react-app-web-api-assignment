@@ -9,6 +9,8 @@ import { MoviesContext } from "../../contexts/moviesContext";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import { createReview } from "../../api";
+import { AuthContext } from "../../contexts/authContext";
 
 const ratings = [
   {
@@ -62,7 +64,9 @@ const styles = {
 
 const ReviewForm = ({ movie }) => {
   const context = useContext(MoviesContext);
+  const authContext = useContext(AuthContext);
   const [rating, setRating] = useState(3);
+  const [content, setContent] = useState("");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -92,8 +96,14 @@ const ReviewForm = ({ movie }) => {
   const onSubmit = (review) => {
     review.movieId = movie.id;
     review.rating = rating;
-    // console.log(review);
+    review.content = content;
     context.addReview(movie, review);
+    createReview(authContext.currentUser.username, review.movieId, review.content)
+
+    // const addReview = (movie, review) => {
+    //   setMyReviews({ ...myReviews, [movie.id]: review });
+    // };
+
     setOpen(true); // NEW
   };
 
@@ -120,31 +130,6 @@ const ReviewForm = ({ movie }) => {
             </Typography>
           </MuiAlert>
         </Snackbar>
-        <Controller
-          name="author"
-          control={control}
-          rules={{ required: "Name is required" }}
-          // defaultValue=""
-          render={({ field: { onChange, value } }) => (
-            <TextField
-              sx={{ width: "40ch" }}
-              variant="outlined"
-              margin="normal"
-              required
-              onChange={onChange}
-              value={value}
-              id="author"
-              label="Author's name"
-              name="author"
-              autoFocus
-            />
-          )}
-        />
-        {errors.author && (
-          <Typography variant="h6" component="p">
-            {errors.author.message}
-          </Typography>
-        )}
         <Controller
           name="review"
           control={control}

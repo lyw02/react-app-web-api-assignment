@@ -9,13 +9,24 @@ const PasswordResetPage = props => {
   const [passwordAgain, setPasswordAgain] = useState("");
   const [isReset, setIsReset] = useState(false);
 
-  const reset = () => {
+  const reset = async () => {
     let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const validPassword = passwordRegEx.test(password);
-
+    if (!validPassword) {
+      const message = "Password is too simple"
+      alert(message);
+    }
+    if (userName === "") {
+      alert("Please enter username")
+    }
+    if (password !== passwordAgain) {
+      const message = "Passwords do not match"
+      alert(message);
+    }
     if (validPassword && password === passwordAgain) {
-      context.resetPassword(userName, password);
+      let resetStatus = await context.resetPassword(userName, password);
       setIsReset(true);
+      resetStatus ? alert("Reset suscess") : alert("Reset failed");
     }
   }
 

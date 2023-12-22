@@ -29,6 +29,18 @@ export const AuthContextProvider = (props) => {
     }
   };
 
+  const authenticateWithMsg = async (username, password) => {
+    const result = await login(username, password);
+    if (result.token) {
+      setToken(result.token);
+      setIsAuthenticated(true);
+      setUserName(username);
+      return `Welcome, ${username}.`
+    } else {
+      return "Wrong username or password."
+    }
+  };
+
   const register = async (username, password) => {
     const result = await signup(username, password);
     console.log(result.code);
@@ -50,6 +62,7 @@ export const AuthContextProvider = (props) => {
       value={{
         isAuthenticated,
         authenticate,
+        authenticateWithMsg,
         register,
         resetPassword,
         signout,

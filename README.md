@@ -7,7 +7,9 @@ Name: Yiwei Liu
 A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** (or modifications to existing features)
  
  + Users can reset password
+ + Error message is displayed when login, signup or reset
  + Users can view user profile
+ + New MongoDB collections: favorites, reviews
  + Users can add a movie to favorites
  + Users can remove a movie from favorites
  + Users can create reviews
@@ -29,10 +31,10 @@ REMEMBER: DON'T PUT YOUR OWN USERNAMES/PASSWORDS/AUTH KEYS IN THE README OR ON G
 ______________________
 NODEENV=development
 PORT=8080
-HOST=
-mongoDB=YourMongoURL
-seedDb=true
-secret=YourJWTSecret
+HOST=localhost
+MONGO_DB=YourMongoURL
+TMDB_KEY=YourTMDBKey
+SECRET=YourJWTSecret
 ______________________
 
 ## API Design

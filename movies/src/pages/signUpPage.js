@@ -9,13 +9,24 @@ const SignUpPage = props => {
   const [passwordAgain, setPasswordAgain] = useState("");
   const [registered, setRegistered] = useState(false);
 
-  const register = () => {
+  const register = async () => {
     let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const validPassword = passwordRegEx.test(password);
-
+    if (!validPassword) {
+      const message = "Password is too simple"
+      alert(message);
+    }
+    if (userName === "") {
+      alert("Please enter username")
+    }
+    if (password !== passwordAgain) {
+      const message = "Passwords do not match"
+      alert(message);
+    }
     if (validPassword && password === passwordAgain) {
-      context.register(userName, password);
+      let registerStatus = await context.register(userName, password);
       setRegistered(true);
+      registerStatus ? alert("Register suscess") : alert("Register failed");
     }
   }
 

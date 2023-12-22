@@ -64,7 +64,7 @@ router.get("/:username", async (req, res) => {
  *      parameters:
  *      - name: action
  *        in: query
- *        description: action: register?
+ *        description: action may be register
  *        required: false
  *        type: string
  *      responses:

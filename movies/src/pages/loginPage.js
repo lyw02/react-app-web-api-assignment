@@ -8,9 +8,12 @@ const LoginPage = (props) => {
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState("");
 
-  const login = () => {
-    context.authenticate(userName, password);
+  const login = async () => {
+    const message = await context.authenticateWithMsg(userName, password)
+    setMsg(message);
+    alert(message);
   };
 
   let location = useLocation();
@@ -46,7 +49,11 @@ const LoginPage = (props) => {
       ></input>
       <br />
       {/* Login web form  */}
-      <button onClick={login}>Log in</button>
+      <button
+        onClick={login}
+      >
+        Log in
+      </button>
       <p>
         Not Registered?
         <Link to="/signup">Sign Up</Link>

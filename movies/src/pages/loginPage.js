@@ -30,7 +30,7 @@ const LoginPage = (props) => {
       <p>You must log in to view the protected pages </p>
       <input
         id="username"
-        placeholder="user name"
+        placeholder="username"
         onChange={(e) => {
           setUserName(e.target.value);
         }}
@@ -49,7 +49,11 @@ const LoginPage = (props) => {
       <button onClick={login}>Log in</button>
       <p>
         Not Registered?
-        <Link to="/signup">Sign Up!</Link>
+        <Link to="/signup">Sign Up</Link>
+      </p>
+      <p>
+        Forgot password?
+        <Link to="/reset">Reset</Link>
       </p>
     </>
   );

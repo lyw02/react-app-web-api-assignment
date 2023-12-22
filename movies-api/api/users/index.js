@@ -11,6 +11,12 @@ router.get("/", async (req, res) => {
   res.status(200).json(users);
 });
 
+// Get all users
+router.get("/:username", async (req, res) => {
+  const user = await User.find({ username: req.params.username });
+  res.status(200).json(user);
+});
+
 // register(Create)/Authenticate User
 router.post(
   "/",

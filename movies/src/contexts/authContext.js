@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { login, signup } from "../api";
+import { login, signup, reset, getUser } from "../api";
 
 export const AuthContext = createContext(null);
 
@@ -29,6 +29,13 @@ export const AuthContextProvider = (props) => {
     console.log(result.code);
     return (result.code == 201) ? true : false;
   };
+
+  const resetPassword = async (username, password) => {
+    const user = await getUser(username);
+    const result = await reset(user._id, username, password);
+    console.log(result.code);
+    return (result.code == 201) ? true : false;
+  }
 
   const signout = () => {
     setTimeout(() => setIsAuthenticated(false), 100);

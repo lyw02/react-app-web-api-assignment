@@ -18,6 +18,7 @@ import TrendingMoviesPage from "./pages/trendingMoviesPage";
 // import UserProfile from "./components/firebaseAuth/userProfile";
 // import PasswordReset from "./components/firebaseAuth/passwordReset";
 import LoginPage from "./pages/loginPage";
+import SignUpPage from "./pages/signUpPage";
 import { AuthContextProvider } from "./contexts/authContext";
 import SearchResultPage from "./pages/searchResultPage";
 import ProtectedRoutes from "./protectedRoutes";
@@ -60,6 +61,7 @@ const App = () => {
               <Route path="/user" element={<UserProfile />} />
               <Route path="/password/reset" element={<PasswordReset />} /> */}
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
               <Route path="/search/:keyword" element={<SearchResultPage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="*" element={<Navigate to="/" />} />

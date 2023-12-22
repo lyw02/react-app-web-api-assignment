@@ -10,7 +10,6 @@ const LoginPage = (props) => {
   const [password, setPassword] = useState("");
 
   const login = () => {
-    console.log("userName, password: " + userName + ", " + password);
     context.authenticate(userName, password);
   };
 

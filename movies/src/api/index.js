@@ -225,7 +225,7 @@ export const login = async (username, password) => {
     method: "post",
     body: JSON.stringify({ username: username, password: password }),
   });
-  const data = await response.json()
+  const data = await response.json();
   console.log(data);
   return data;
 };
@@ -234,9 +234,9 @@ export const signup = async (username, password) => {
   const response = await fetch(`${baseUrl}/users?action=register`, {
     headers: {
       "Content-Type": "application/json",
-      method: "post",
-      body: JSON.stringify({ username: username, password: password }),
     },
+    method: "post",
+    body: JSON.stringify({ username: username, password: password }),
   });
   return response.json();
 };

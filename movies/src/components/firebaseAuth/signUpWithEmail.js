@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MaterailAlert from "@mui/material/Alert";
 import Link from "@mui/material/Link";
-import { useAuth } from "../../contexts/authContext";
+import { AuthContext } from "../../contexts/authContext";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const Alert = forwardRef(function Alert(props, ref) {
@@ -17,7 +17,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 export default function SignUpWithEmail() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [isBackdropOpen, setIsBackdropOpen] = useState(true);
@@ -26,12 +26,13 @@ export default function SignUpWithEmail() {
   const [status, setStatus] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { signUpWithEmail } = useAuth();
+  // const { signUpWithEmail } = useAuth();
+  const context = useContext(AuthContext)
 
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (!email || !password || !passwordConfirmation) {
+    if (!username || !password || !passwordConfirmation) {
       setStatus("error");
       setStatusMessage("Please fill in the information.");
       setIsAlertOpen(true);
@@ -42,7 +43,7 @@ export default function SignUpWithEmail() {
     } else {
       try {
         setIsLoading(true); // Disable the submit button during async operation
-        await signUpWithEmail(email, password);
+        await context.register(username, password);
         setIsLoading(false);
         setStatus("success");
         setStatusMessage("Success.");
@@ -110,7 +111,7 @@ export default function SignUpWithEmail() {
               <TextField
                 label="Email"
                 variant="standard"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
                 label="Password"

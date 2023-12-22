@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MaterailAlert from "@mui/material/Alert";
 import Link from "@mui/material/Link";
-import { useAuth } from "../../contexts/authContext";
+import { AuthContext } from "../../contexts/authContext";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const Alert = forwardRef(function Alert(props, ref) {
@@ -19,13 +19,14 @@ export default function UserProfile() {
   const [statusMessage, setStatusMessage] = useState();
   const [status, setStatus] = useState();
 
-  const { currentUser, logOut } = useAuth();
+  // const { currentUser, logOut } = useAuth();
+  const context = useContext(AuthContext)
 
   const navigate = useNavigate();
 
   const handleLogOut = async () => {
     try {
-      await logOut();
+      await context.signout();
       setStatus("success");
       setStatusMessage("Success.");
       setIsAlertOpen(true);
@@ -73,10 +74,10 @@ export default function UserProfile() {
             >
               PROFILE
             </Typography>
-            {currentUser ? (
+            {context.isAuthenticated ? (
               <Stack direction="row" justifyContent="space-between">
-                <Typography variant="subtitle1">Email</Typography>
-                <Typography variant="subtitle1">{currentUser.email}</Typography>
+                <Typography variant="subtitle1">Username</Typography>
+                <Typography variant="subtitle1">{context.isAuthenticated.username}</Typography>
               </Stack>
             ) : (
               <Typography variant="subtitle1" textAlign="center">
@@ -91,7 +92,7 @@ export default function UserProfile() {
               {/* <Button onClick={handleChangeProfile} disabled>
                 SAVE CHANGE
               </Button> */}
-              <Button onClick={handleLogOut} disabled={!currentUser}>
+              <Button onClick={handleLogOut} disabled={!context.isAuthenticated}>
                 LOG OUT
               </Button>
             </Stack>

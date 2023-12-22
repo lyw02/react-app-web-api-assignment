@@ -1,4 +1,4 @@
-const baseUrl = "127.0.0.1:8080/api";
+const baseUrl = "http://127.0.0.1:8080/api";
 const apiKey = process.env.REACT_APP_TMDB_KEY;
 
 export const getMovies = (page = 1) => {
@@ -215,4 +215,28 @@ export const getFavorites = () => {
     .catch((error) => {
       throw error;
     });
+};
+
+export const login = async (username, password) => {
+  const response = await fetch(`${baseUrl}/users`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "post",
+    body: JSON.stringify({ username: username, password: password }),
+  });
+  const data = await response.json()
+  console.log(data);
+  return data;
+};
+
+export const signup = async (username, password) => {
+  const response = await fetch(`${baseUrl}/users?action=register`, {
+    headers: {
+      "Content-Type": "application/json",
+      method: "post",
+      body: JSON.stringify({ username: username, password: password }),
+    },
+  });
+  return response.json();
 };

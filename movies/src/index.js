@@ -13,12 +13,14 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import TrendingMoviesPage from "./pages/trendingMoviesPage";
-import SignUpWithEmail from "./components/firebaseAuth/signUpWithEmail";
-import Login from "./components/firebaseAuth/login";
-import UserProfile from "./components/firebaseAuth/userProfile";
-import PasswordReset from "./components/firebaseAuth/passwordReset";
-import { AuthProvider } from "./contexts/authContext";
+// import SignUpWithEmail from "./components/firebaseAuth/signUpWithEmail";
+// import Login from "./components/firebaseAuth/login";
+// import UserProfile from "./components/firebaseAuth/userProfile";
+// import PasswordReset from "./components/firebaseAuth/passwordReset";
+import LoginPage from "./pages/loginPage";
+import { AuthContextProvider } from "./contexts/authContext";
 import SearchResultPage from "./pages/searchResultPage";
+import ProtectedRoutes from "./protectedRoutes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +37,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <MoviesContextProvider>
-          <AuthProvider>
+          <AuthContextProvider>
             <SiteHeader />
             <Routes>
               <Route path="/reviews/form" element={<AddMovieReviewPage />} />
@@ -48,18 +50,21 @@ const App = () => {
                 path="/movies/trending/:timeWindow"
                 element={<TrendingMoviesPage />}
               />
-              <Route path="/reviews/:id" element={<MovieReviewPage />} />
-              <Route path="/movies/:id" element={<MoviePage />} />
-              <Route path="/actors/:id" element={<ActorPage />} />
-              <Route path="/signup" element={<SignUpWithEmail />} />
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/reviews/:id" element={<MovieReviewPage />} />
+                <Route path="/movies/:id" element={<MoviePage />} />
+                <Route path="/actors/:id" element={<ActorPage />} />
+              </Route>
+              {/* <Route path="/signup" element={<SignUpWithEmail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/user" element={<UserProfile />} />
-              <Route path="/password/reset" element={<PasswordReset />} />
+              <Route path="/password/reset" element={<PasswordReset />} /> */}
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/search/:keyword" element={<SearchResultPage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-          </AuthProvider>
+          </AuthContextProvider>
         </MoviesContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />

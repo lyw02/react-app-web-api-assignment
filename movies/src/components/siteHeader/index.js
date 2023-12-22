@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { v4 as uuidv4 } from "uuid";
-import { useAuth } from "../../contexts/authContext";
+import { AuthContext } from "../../contexts/authContext";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -30,7 +30,8 @@ const SiteHeader = ({ history }) => {
 
   const navigate = useNavigate();
 
-  const { currentUser } = useAuth();
+  // const { currentUser } = useAuth();
+  const context = useContext(AuthContext);
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -147,7 +148,7 @@ const SiteHeader = ({ history }) => {
           ) : (
             <>{getMenu()}</>
           )}
-          <Link to={currentUser ? "/user" : "/signup"}>
+          <Link to={context.isAuthenticated ? "/user" : "/login"}>
             <Button sx={{ color: "white" }}>
               <AccountCircleIcon />
             </Button>

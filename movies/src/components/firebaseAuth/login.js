@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MaterailAlert from "@mui/material/Alert";
 import Link from "@mui/material/Link";
-import { useAuth } from "../../contexts/authContext";
+import { AuthContext } from "../../contexts/authContext";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const Alert = forwardRef(function Alert(props, ref) {
@@ -17,7 +17,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isBackdropOpen, setIsBackdropOpen] = useState(true);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -25,19 +25,20 @@ export default function Login() {
   const [status, setStatus] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { currentUser, logInWithEmail } = useAuth();
+  // const { currentUser, logInWithEmail } = useAuth();
+  const context = useContext(AuthContext)
 
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (!email || !password) {
+    if (!username || !password) {
       setStatusMessage("Please fill in the information.");
       setStatus("error");
       setIsAlertOpen(true);
     } else {
       try {
         setIsLoading(true);
-        await logInWithEmail(email, password);
+        await context.authenticate(username, password);
         setIsLoading(false);
         setStatusMessage("Success.");
         setStatus("success");
@@ -87,7 +88,7 @@ export default function Login() {
           }}
           sx={{ width: "30%", margin: "auto" }}
         >
-          {currentUser ? (
+          {context.isAuthenticated ? (
             <CardContent>
               <Stack direction="column" justifyContent="space-between">
                 <Typography
@@ -131,7 +132,7 @@ export default function Login() {
                 <TextField
                   label="Email"
                   variant="standard"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
                 <TextField
                   label="Password"

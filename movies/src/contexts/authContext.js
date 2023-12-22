@@ -1,52 +1,50 @@
-import React, { useContext, useEffect, useState } from "react";
-import { auth } from "../firebase";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { login, signup } from "../api";
 
-const AuthContext = React.createContext();
+export const AuthContext = createContext(null);
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const AuthContextProvider = (props) => {
+  const existingToken = localStorage.getItem("token");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authToken, setAuthToken] = useState(existingToken);
+  const [userName, setUserName] = useState("");
 
-export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
-  function signUpWithEmail(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password);
+  // Function to put JWT token in local storage.
+  const setToken = (data) => {
+    localStorage.setItem("token", data);
+    setAuthToken(data);
   }
 
-  function logInWithEmail(email, password) {
-    return auth.signInWithEmailAndPassword(email, password);
-  }
-
-  function logOut() {
-    return auth.signOut();
-  }
-
-  function resetPassword(email) {
-    return auth.sendPasswordResetEmail(email);
-  }
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setIsLoading(false);
-    });
-
-    return unsubscribe;
-  }, []);
-
-  const value = {
-    currentUser,
-    signUpWithEmail,
-    logInWithEmail,
-    logOut,
-    resetPassword,
+  const authenticate = async (username, password) => {
+    const result = await login(username, password);
+    if (result.token) {
+      setToken(result.token)
+      setIsAuthenticated(true);
+      setUserName(username);
+    }
   };
 
+  const register = async (username, password) => {
+    const result = await signup(username, password);
+    console.log(result.code);
+    return (result.code == 201) ? true : false;
+  };
+
+  const signout = () => {
+    setTimeout(() => setIsAuthenticated(false), 100);
+  }
+
   return (
-    <AuthContext.Provider value={value}>
-      {!isLoading && children}
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        authenticate,
+        register,
+        signout,
+        userName
+      }}
+    >
+      {props.children}
     </AuthContext.Provider>
   );
 }

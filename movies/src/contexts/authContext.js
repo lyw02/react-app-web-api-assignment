@@ -47,6 +47,7 @@ export const AuthContextProvider = (props) => {
         isAuthenticated,
         authenticate,
         register,
+        resetPassword,
         signout,
         userName
       }}

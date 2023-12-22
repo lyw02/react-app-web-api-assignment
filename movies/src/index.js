@@ -20,6 +20,7 @@ import TrendingMoviesPage from "./pages/trendingMoviesPage";
 import LoginPage from "./pages/loginPage";
 import SignUpPage from "./pages/signUpPage";
 import PasswordResetPage from "./pages/passwordResetPage";
+import UserProfilePage from "./pages/userProfilePage";
 import { AuthContextProvider } from "./contexts/authContext";
 import SearchResultPage from "./pages/searchResultPage";
 import ProtectedRoutes from "./protectedRoutes";
@@ -64,6 +65,7 @@ const App = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/reset" element={<PasswordResetPage />} />
+              <Route path="/user" element={<UserProfilePage />} />
               <Route path="/search/:keyword" element={<SearchResultPage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="*" element={<Navigate to="/" />} />

@@ -3,10 +3,9 @@
 Name: Yiwei Liu
 
 ## Features.
-
-A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** (or modifications to existing features)
  
  + Users can reset password
+ + Improved validation of username
  + Error message is displayed when login, signup or reset
  + Users can view user profile
  + New MongoDB collections: favorites, reviews
@@ -16,18 +15,11 @@ A bullet-point list of the ADDITIONAL features you have implemented in the API *
 
 ## Setup requirements.
 
-[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.]
-
 Start Swagger:
 
 After starting backend app in `localhost:8080`, go to `localhost:8080/swagger` to see Swagger API document.
 
 ## API Configuration
-
-Describe any configuration that needs to take place before running the API. For example, creating an `.env` file and what variables to put in it. Give an example of how this might be done.
-
-REMEMBER: DON'T PUT YOUR OWN USERNAMES/PASSWORDS/AUTH KEYS IN THE README OR ON GITHUB, just placeholders as indicated below:
-
 ______________________
 NODEENV=development
 PORT=8080
@@ -99,8 +91,6 @@ Routes:
     + /user
 
 ## Integrating with React App
-
-Describe how you integrated your React app with the API. List the views that use your Web API instead of the TMDB API. Describe any other updates to the React app from Assignment One.
 
 Every fetch from frontend app sends request to Web API.
 

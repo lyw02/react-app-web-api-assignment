@@ -11,9 +11,15 @@ const SignUpPage = props => {
 
   const register = async () => {
     let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    let usernameRegEx = /^[a-zA-Z][a-zA-Z0-9]{3,}$/;
     const validPassword = passwordRegEx.test(password);
+    const validUsername = usernameRegEx.test(userName);
     if (!validPassword) {
       const message = "Password is too simple"
+      alert(message);
+    }
+    if (!validUsername) {
+      const message = "Invalid username."
       alert(message);
     }
     if (userName === "") {

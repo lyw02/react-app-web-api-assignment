@@ -1,20 +1,15 @@
 const baseUrl = "http://127.0.0.1:8080/api";
-const apiKey = process.env.REACT_APP_TMDB_KEY;
 const token = localStorage.getItem("token");
 
-export const getMovies = (page = 1) => {
-  return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&include_adult=false&include_video=false&page=${page}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+export const getMovies = async (page = 1) => {
+  const response = await fetch(`${baseUrl}/movies/?page=${page}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getMovie = async (id) => {

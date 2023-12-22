@@ -54,21 +54,17 @@ export const getGenres = async () => {
   return data;
 };
 
-export const getMovieImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
+export const getMovieImages = async (args) => {
+  const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apiKey}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const response = await fetch(`${baseUrl}/movies/${id}/images`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getMovieReviews = (id) => {
@@ -145,21 +141,17 @@ export const getActorMovieCredits = async (args) => {
   return data;
 };
 
-export const getActorImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
+export const getActorImages = async (args) => {
+  const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/person/${id}/images?api_key=${apiKey}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const response = await fetch(`${baseUrl}/movies/actor/${id}/images`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getSimilarMovies = async (args) => {

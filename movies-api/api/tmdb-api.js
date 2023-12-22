@@ -47,9 +47,7 @@ export const getGenres = () => {
     });
 };
 
-export const getMovieImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
-  const { id } = idPart;
+export const getMovieImages = (id) => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.TMDB_KEY}`
   )
@@ -122,9 +120,7 @@ export const getActorMovieCredits = (id) => {
     });
 };
 
-export const getActorImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
-  const { id } = idPart;
+export const getActorImages = (id) => {
   return fetch(
     `https://api.themoviedb.org/3/person/${id}/images?api_key=${process.env.TMDB_KEY}`
   )

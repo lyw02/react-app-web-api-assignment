@@ -11,6 +11,8 @@ import {
   getTrendingMovies,
   getMoviesByKeyword,
   getMovie,
+  getMovieImages,
+  getActorImages,
 } from "../tmdb-api";
 
 const router = express.Router();
@@ -135,6 +137,26 @@ router.get(
   asyncHandler(async (req, res) => {
     const keyword = req.params.keyword;
     const results = await getMoviesByKeyword(keyword);
+    res.status(200).json(results);
+  })
+);
+
+// Get movie images
+router.get(
+  "/:id/images",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const results = await getMovieImages(id);
+    res.status(200).json(results);
+  })
+);
+
+// Get actor images
+router.get(
+  "/actor/:id/images",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const results = await getActorImages(id);
     res.status(200).json(results);
   })
 );

@@ -49,7 +49,7 @@ router.post(
       console.error(error);
       return res
         .status(500)
-        .json({ success: false, msg: "Internal server error." });
+        .json({ success: false, msg: error });
     }
   })
 );
@@ -57,7 +57,10 @@ router.post(
 // Delete a movie from favorites
 router.delete("/:id", async (req, res) => {
   try {
-    const result = await Favorite.deleteOne({ movie_id: req.params.id });
+    const result = await Favorite.deleteOne({
+      user_id: req.params.user_id,
+      movie_id: req.params.movie_id,
+    });
 
     if (result.deletedCount > 0) {
       res
@@ -73,8 +76,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 async function addFavorite(req, res) {
-  req.body.user_id = req.user._id;
-  req.body.movie_id = req.params.id;
   await Favorite.create(req.body);
   res
     .status(201)

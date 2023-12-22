@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -9,31 +9,21 @@ import WriteReview from "../components/cardIcons/writeReview";
 
 const FavoriteMoviesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [movieIds, setMovieIds] = useState([]);
+  const [movies, setMovies] = useState([]);
 
-  const { favorites: movieIds } = useContext(MoviesContext);
-  // const favorites = getFavorites();
-  // const movieIds = [];
+  useEffect(() => {
+    getFavorites().then((favorites) => {
+      const newMovieIds = favorites.results.map((r) => r.movie_id);
+      setMovieIds(newMovieIds);
+    });
+  }, []);
 
-  // Create an array of queries and run in parallel.
-  const favoriteMovieQueries = useQueries(
-    movieIds.map((movieId) => {
-      return {
-        queryKey: ["movie", { id: movieId }],
-        queryFn: getMovie,
-      };
-    })
-  );
-  // Check if any of the parallel queries is still loading.
-  const isLoading = favoriteMovieQueries.find((m) => m.isLoading === true);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  const movies = favoriteMovieQueries.map((q) => {
-    q.data.genre_ids = q.data.genres.map((g) => g.id);
-    return q.data;
-  });
+  useEffect(() => {
+    Promise.all(movieIds.map((id) => getMovie(id))).then((newMovies) => {
+      setMovies(newMovies);
+    });
+  }, [movieIds]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);

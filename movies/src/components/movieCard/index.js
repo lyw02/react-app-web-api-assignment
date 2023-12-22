@@ -15,14 +15,21 @@ import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/authContext";
+import { addToFavorites, deleteFromFavorites, getFavorites } from "../../api";
 
 export default function MovieCard({ movie, action }) {
+  // const { favorites, mustWatch } = useContext(MoviesContext);
   const { favorites, mustWatch } = useContext(MoviesContext);
+  // const favorites = getFavorites();
+  // const authContext = useContext(AuthContext);
 
   if (favorites.find((id) => id === movie.id)) {
     movie.favorite = true;
+    // addToFavorites(authContext.user._id, movie.id);
   } else {
     movie.favorite = false;
+    // deleteFromFavorites(authContext.user._id, movie.id);
   }
 
   if (mustWatch.find((id) => id === movie.id)) {
@@ -32,22 +39,23 @@ export default function MovieCard({ movie, action }) {
   }
 
   const cardHeaderAvatar = [
-    {key: 0, attrName: "favorite", avatar: (<FavoriteIcon />)},
-    {key: 1, attrName: "must_watch", avatar: (<MustWatchIcon />)}
-  ]
+    { key: 0, attrName: "favorite", avatar: <FavoriteIcon /> },
+    { key: 1, attrName: "must_watch", avatar: <MustWatchIcon /> },
+  ];
 
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
-        avatar={
-          cardHeaderAvatar.map((item) => {
-            return movie[item.attrName] ? (
-              <Avatar key={item.key} sx={{background: "red", marginRight: "5px"}}>
-                {item.avatar}
-              </Avatar>
-            ) : null
-          })
-        }
+        avatar={cardHeaderAvatar.map((item) => {
+          return movie[item.attrName] ? (
+            <Avatar
+              key={item.key}
+              sx={{ background: "red", marginRight: "5px" }}
+            >
+              {item.avatar}
+            </Avatar>
+          ) : null;
+        })}
         title={
           <Typography variant="h5" component="p">
             {movie.title}{" "}

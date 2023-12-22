@@ -58,8 +58,8 @@ router.post(
 router.delete("/:id", async (req, res) => {
   try {
     const result = await Favorite.deleteOne({
-      user_id: req.params.user_id,
-      movie_id: req.params.movie_id,
+      user_id: req.body.user_id,
+      movie_id: req.body.movie_id,
     });
 
     if (result.deletedCount > 0) {

@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { AuthContext } from "../../contexts/authContext";
 import { addToFavorites, deleteFromFavorites } from "../../api";
 
 const AddToFavoritesIcon = ({ movie }) => {
-  // const context = useContext(MoviesContext);
   const authContext = useContext(AuthContext);
 
   const handleAddToFavorites = async (e) => {

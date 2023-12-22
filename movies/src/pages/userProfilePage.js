@@ -19,7 +19,6 @@ export default function UserProfilePage() {
   const [statusMessage, setStatusMessage] = useState();
   const [status, setStatus] = useState();
 
-  // const { currentUser, logOut } = useAuth();
   const context = useContext(AuthContext);
 
   const navigate = useNavigate();

@@ -36,7 +36,7 @@ export const AuthContextProvider = (props) => {
   };
 
   const resetPassword = async (username, password) => {
-    const result = await reset(currentUser._id, username, password);
+    const result = await reset(username, password);
     console.log(result.code);
     return result.code == 201 ? true : false;
   };

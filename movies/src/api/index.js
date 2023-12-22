@@ -273,8 +273,8 @@ export const signup = async (username, password) => {
   return response.json();
 };
 
-export const reset = async (_id, username, password) => {
-  const response = await fetch(`${baseUrl}/users/${_id}`, {
+export const reset = async (username, password) => {
+  const response = await fetch(`${baseUrl}/users/${username}`, {
     headers: {
       "Content-Type": "application/json",
     },

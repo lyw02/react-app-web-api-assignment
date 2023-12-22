@@ -2,6 +2,7 @@ import express from "express";
 import User from "./userModel";
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const router = express.Router(); // eslint-disable-line
 
@@ -42,13 +43,12 @@ router.post(
 
 // Update a user
 router.put("/:id", async (req, res) => {
-  if (req.body._id) delete req.body._id;
-  const result = await User.updateOne(
-    {
-      _id: req.params.id,
-    },
-    req.body
-  );
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(req.body.password, saltRounds);
+  const result = await User.updateOne({
+    username: req.body.username,
+    password: hash,
+  });
   if (result.matchedCount) {
     res.status(200).json({ code: 200, msg: "User Updated Sucessfully" });
   } else {

@@ -5,7 +5,21 @@ import express from "express";
 
 const router = express.Router();
 
-// Get favorite movies
+/**
+ * @swagger
+ * /api/favorites/:
+ *    get:
+ *      tags:
+ *      - favorites
+ *      summary: Get all favorite movies
+ *      produces:
+ *      - application/json
+ *      responses:
+ *        200:
+ *          description: success
+ *          schema:
+ *            ref: #/favoriteModel/FavoriteSchema
+ * */
 router.get(
   "/",
   asyncHandler(async (req, res) => {
@@ -33,7 +47,29 @@ router.get(
   })
 );
 
-// Add new favorite movie
+/**
+ * @swagger
+ * /api/favorites/{movieId}:
+ *    post:
+ *      tags:
+ *      - favorites
+ *      summary: Add new favorite movie
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: movieId
+ *        in: path
+ *        description: movie id
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        format: int32
+ *      responses:
+ *        400:
+ *          description: Movie id required.
+ *        500:
+ *          description: Error.
+ * */
 router.post(
   "/:id", // movie id
   asyncHandler(async (req, res) => {
@@ -54,7 +90,33 @@ router.post(
   })
 );
 
-// Delete a movie from favorites
+/**
+ * @swagger
+ * /api/favorites/{movieId}:
+ *    delete:
+ *      tags:
+ *      - favorites
+ *      summary: Delete a movie from favorites
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: movieId
+ *        in: path
+ *        description: movie id
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        format: int32
+ *      responses:
+ *        200:
+ *          description: Successfully Deleted From Favorites
+ *          schema:
+ *            ref: #/favoriteModel/FavoriteSchema
+ *        404:
+ *          description: Favorite Movie Not Found
+ *        500:
+ *          description: Internal Server Error
+ * */
 router.delete("/:id", async (req, res) => {
   try {
     const result = await Favorite.deleteOne({

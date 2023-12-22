@@ -7,12 +7,15 @@ import moviesRouter from './api/movies';
 import reviewsRouter from './api/reviews';
 import favoritesRouter from './api/favorites';
 import authenticate from './authenticate';
+import swaggerInstall from './utils/swagger';
 import './db';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT; 
+
+swaggerInstall(app)
 
 app.use(cors());
 app.use(express.json());

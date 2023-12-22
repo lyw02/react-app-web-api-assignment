@@ -7,7 +7,27 @@ import { getMovieReviews } from "../tmdb-api";
 
 const router = express.Router();
 
-// Get reviews from tmdb
+/**
+ * @swagger
+ * /api/reviews/{movieId}/tmdb:
+ *    get:
+ *      tags:
+ *      - reviews
+ *      summary: Get reviews from tmdb
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: movieId
+ *        in: path
+ *        description: movie id
+ *        required: true
+ *        type: string
+ *      responses:
+ *        200:
+ *          description: Sucess
+ *          schema:
+ *            ref: #/reviewModel/ReviewSchema
+ * */
 router.get(
   "/:id/tmdb",
   asyncHandler(async (req, res) => {
@@ -17,7 +37,27 @@ router.get(
   })
 );
 
-// Get reviews from mongodb
+/**
+ * @swagger
+ * /api/reviews/{movieId}/mongodb:
+ *    get:
+ *      tags:
+ *      - reviews
+ *      summary: Get reviews from mongodb
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: movieId
+ *        in: path
+ *        description: movie id
+ *        required: true
+ *        type: string
+ *      responses:
+ *        200:
+ *          description: Sucess
+ *          schema:
+ *            ref: #/reviewModel/ReviewSchema
+ * */
 router.get(
   "/:id/mongodb",
   asyncHandler(async (req, res) => {
@@ -26,7 +66,31 @@ router.get(
   })
 );
 
-// Create new review
+/**
+ * @swagger
+ * /api/reviews/{movieId}:
+ *    post:
+ *      tags:
+ *      - reviews
+ *      summary: Create new review
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: movieId
+ *        in: path
+ *        description: movie id
+ *        required: true
+ *        type: string
+ *      responses:
+ *        200:
+ *          description: Sucess
+ *          schema:
+ *            ref: #/reviewModel/ReviewSchema
+ *        400:
+ *          description: Content required
+ *        500:
+ *          description: Internal server error
+ * */
 router.post(
   "/:id", // movie id
   asyncHandler(async (req, res) => {
@@ -47,40 +111,40 @@ router.post(
   })
 );
 
-// Update a review by review id
-router.put("/:_id", async (req, res) => {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  req.body.updated_at = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-  const result = await Review.updateOne(
-    {
-      _id: req.params._id,
-    },
-    req.body
-  );
-  if (result.matchedCount) {
-    res.status(200).json({ code: 200, msg: "Review Updated Sucessfully" });
-  } else {
-    res.status(404).json({ code: 404, msg: "Unable to Update Review" });
-  }
-});
+// // Update a review by review id
+// router.put("/:_id", async (req, res) => {
+//   if (req.body._id) {
+//     delete req.body._id;
+//   }
+//   req.body.updated_at = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+//   const result = await Review.updateOne(
+//     {
+//       _id: req.params._id,
+//     },
+//     req.body
+//   );
+//   if (result.matchedCount) {
+//     res.status(200).json({ code: 200, msg: "Review Updated Sucessfully" });
+//   } else {
+//     res.status(404).json({ code: 404, msg: "Unable to Update Review" });
+//   }
+// });
 
-// Delete a review by review id
-router.delete("/:_id", async (req, res) => {
-  try {
-    const result = await Review.deleteOne({ _id: req.params._id });
+// // Delete a review by review id
+// router.delete("/:_id", async (req, res) => {
+//   try {
+//     const result = await Review.deleteOne({ _id: req.params._id });
 
-    if (result.deletedCount > 0) {
-      res.status(200).json({ code: 200, msg: "Review Deleted Successfully" });
-    } else {
-      res.status(404).json({ code: 404, msg: "Review Not Found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ code: 500, msg: "Internal Server Error" });
-  }
-});
+//     if (result.deletedCount > 0) {
+//       res.status(200).json({ code: 200, msg: "Review Deleted Successfully" });
+//     } else {
+//       res.status(404).json({ code: 404, msg: "Review Not Found" });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ code: 500, msg: "Internal Server Error" });
+//   }
+// });
 
 async function createReview(req, res) {
   await Review.create(req.body);

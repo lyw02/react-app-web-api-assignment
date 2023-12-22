@@ -16,6 +16,10 @@ A bullet-point list of the ADDITIONAL features you have implemented in the API *
 
 [ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.]
 
+Start Swagger:
+
+After starting backend app in `localhost:8080`, go to `localhost:8080/swagger` to see Swagger API document.
+
 ## API Configuration
 
 Describe any configuration that needs to take place before running the API. For example, creating an `.env` file and what variables to put in it. Give an example of how this might be done.
@@ -59,10 +63,10 @@ ______________________
 - /api/reviews/{movieId}/mongodb | GET | Gets reviews of a movie from MongoDB
 - /api/reviews/{movieId}/tmdb | GET | Gets reviews of a movie from TMDB
 - /api/reviews/{movieId} | POST | Creates new review of a movie, stores in MongoDB
-<!-- - /api/reviews/{reviewId} | PUT | Updates a review
-- /api/reviews/{reviewId} | DELETE | Deletes a review -->
 
-If you have your API design on an online platform or graphic, please link to it (e.g. [Swaggerhub](https://app.swaggerhub.com/)).
+Swagger: `localhost:8080/swagger/`
+
+![Swagger API Document](./swagger.png)
 
 ## Security and Authentication
 
@@ -72,7 +76,6 @@ Authentication and security:
 
 + Use bcrypt to encrypt user password
 + Use JWT as authentication token
-
 
 Routes:
 
@@ -107,4 +110,9 @@ List the views that use my Web API instead of the TMDB API:
 
 ## Independent learning (if relevant)
 
-Briefly explain any non-standard features developed for the app.   
+Briefly explain any non-standard features developed for the app.
+
++ Use Swagger to create documentation for APIs
+    + References: 
+        + https://juejin.cn/post/7157246112699514887
+        + https://editor.swagger.io/

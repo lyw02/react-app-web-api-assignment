@@ -6,19 +6,77 @@ import bcrypt from "bcrypt";
 
 const router = express.Router(); // eslint-disable-line
 
-// Get all users
+/**
+ * @swagger
+ * /api/users:
+ *    get:
+ *      tags:
+ *      - users
+ *      summary: Get all users
+ *      produces:
+ *      - application/json
+ *      responses:
+ *        200:
+ *          description: Success
+ *          schema:
+ *            ref: #/userModel/UserSchema
+ * */
 router.get("/", async (req, res) => {
   const users = await User.find();
   res.status(200).json(users);
 });
 
-// Get all users
+/**
+ * @swagger
+ * /api/users/{username}:
+ *    get:
+ *      tags:
+ *      - users
+ *      summary: Get user by username
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: username
+ *        in: path
+ *        description: username
+ *        required: true
+ *        type: string
+ *      responses:
+ *        200:
+ *          description: Successfully Deleted From Favorites
+ *          schema:
+ *            ref: #/userModel/UserSchema
+ * */
 router.get("/:username", async (req, res) => {
   const user = await User.find({ username: req.params.username });
   res.status(200).json(user);
 });
 
-// register(Create)/Authenticate User
+/**
+ * @swagger
+ * /api/users:
+ *    post:
+ *      tags:
+ *      - users
+ *      summary: register(Create)/Authenticate User
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: action
+ *        in: query
+ *        description: action: register?
+ *        required: false
+ *        type: string
+ *      responses:
+ *        200:
+ *          description: Success
+ *          schema:
+ *            ref: #/userModel/UserSchema
+ *        400:
+ *          description: Username and password are required
+ *        500:
+ *          description: Internal server error
+ * */
 router.post(
   "/",
   asyncHandler(async (req, res) => {
@@ -41,7 +99,29 @@ router.post(
   })
 );
 
-// Update a user
+/**
+ * @swagger
+ * /api/users/{userId}:
+ *    put:
+ *      tags:
+ *      - users
+ *      summary: Update a user
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - name: userId
+ *        in: path
+ *        description: user id
+ *        required: true
+ *        type: string
+ *      responses:
+ *        200:
+ *          description: User Updated Sucessfully
+ *          schema:
+ *            ref: #/userModel/UserSchema
+ *        404:
+ *          description: Unable to Update User
+ * */
 router.put("/:id", async (req, res) => {
   const saltRounds = 10;
   const hash = await bcrypt.hash(req.body.password, saltRounds);

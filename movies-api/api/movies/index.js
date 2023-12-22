@@ -63,7 +63,7 @@ router.get(
 router.get(
   "/upcoming/list",
   asyncHandler(async (req, res) => {
-    const upcomingMovies = await getUpcomingMovies();
+    const upcomingMovies = await getUpcomingMovies(req.query.page);
     res.status(200).json(upcomingMovies);
     return res;
   })

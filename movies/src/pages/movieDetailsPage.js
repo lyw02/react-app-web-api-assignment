@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from 'react-router-dom';
 import MovieDetails from "../components/movieDetails/";
 import PageTemplate from "../components/templateMoviePage";
-import { getMovie, getMovieCredits, getSimilarMovies } from '../api'
+import { getMovie, getMovieByQuery, getMovieCredits, getSimilarMovies } from '../api'
 import { useQuery } from "react-query";
 import Spinner from '../components/spinner'
 // import useMovie from "../hooks/useMovie";
@@ -12,7 +12,7 @@ const MoviePage = (props) => {
   
   const { data: movie, error: movieError, isLoading: isMovieLoading, isError: isMovieError } = useQuery(
     ["movie", { id: id }],
-    getMovie
+    getMovieByQuery
   );
 
   const { data: actors, error: actorsError, isLoading: isActorsLoading, isError: isActorsError } = useQuery(

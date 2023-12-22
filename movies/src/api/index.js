@@ -1,6 +1,6 @@
 const baseUrl = "http://127.0.0.1:8080/api";
 const apiKey = process.env.REACT_APP_TMDB_KEY;
-const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
 
 export const getMovies = (page = 1) => {
   return fetch(
@@ -21,24 +21,37 @@ export const getMovie = async (id) => {
   const response = await fetch(`${baseUrl}/movies/${id}`, {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token
+      Authorization: token,
     },
-    method: "get"
+    method: "get",
   });
   const data = await response.json();
-  console.log("Data: " + JSON.stringify(data));
   return data;
 };
 
-export const getGenres = () => {
-  return fetch(`${baseUrl}/movies/genres/list`)
-    .then((response) => {
-      console.log(response.body);
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+export const getMovieByQuery = async (args) => {
+  const [, idPart] = args.queryKey;
+  const { id } = idPart;
+  const response = await fetch(`${baseUrl}/movies/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
+};
+
+export const getGenres = async () => {
+  const response = await fetch(`${baseUrl}/movies/genres/list`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getMovieImages = ({ queryKey }) => {
@@ -79,34 +92,29 @@ export const getMovieReviews = (id) => {
   return records;
 };
 
-export const getUpcomingMovies = (page = 1) => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=${page}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+export const getUpcomingMovies = async (page = 1) => {
+  const response = await fetch(`${baseUrl}/movies/upcoming/list?page=${page}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
-export const getMovieCredits = (args) => {
+export const getMovieCredits = async (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(`${baseUrl}/movies/${id}/credits`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const response = await fetch(`${baseUrl}/movies/${id}/credits`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getActorDetails = (args) => {
@@ -156,19 +164,19 @@ export const getActorImages = ({ queryKey }) => {
     });
 };
 
-export const getSimilarMovies = (args) => {
+export const getSimilarMovies = async (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(`${baseUrl}/movies/${id}/similar`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+
+  const response = await fetch(`${baseUrl}/movies/${id}/similar`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getTrendingMovies = (args, page) => {
@@ -207,9 +215,9 @@ export const getFavorites = async () => {
   const response = await fetch(`${baseUrl}/favorites`, {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token
+      Authorization: token,
     },
-    method: "get"
+    method: "get",
   });
   const data = await response.json();
   console.log("Data: " + JSON.stringify(data));
@@ -220,7 +228,7 @@ export const addToFavorites = async (userId, movieId) => {
   const response = await fetch(`${baseUrl}/favorites/${movieId}`, {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token
+      Authorization: token,
     },
     method: "post",
     body: JSON.stringify({ user_id: userId, movie_id: movieId }),
@@ -234,7 +242,7 @@ export const deleteFromFavorites = async (userId, movieId) => {
   const response = await fetch(`${baseUrl}/favorites/${movieId}`, {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token
+      Authorization: token,
     },
     method: "delete",
     body: JSON.stringify({ user_id: userId, movie_id: movieId }),

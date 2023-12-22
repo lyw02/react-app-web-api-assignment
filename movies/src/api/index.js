@@ -117,34 +117,32 @@ export const getMovieCredits = async (args) => {
   return data;
 };
 
-export const getActorDetails = (args) => {
+export const getActorDetails = async (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(`${baseUrl}/movies/actor/${id}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const response = await fetch(`${baseUrl}/movies/actor/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
-export const getActorMovieCredits = (args) => {
+export const getActorMovieCredits = async (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(`${baseUrl}/movies/actor/${id}/movie_credits`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const response = await fetch(`${baseUrl}/movies/actor/${id}/movie_credits`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getActorImages = ({ queryKey }) => {
@@ -167,7 +165,6 @@ export const getActorImages = ({ queryKey }) => {
 export const getSimilarMovies = async (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-
   const response = await fetch(`${baseUrl}/movies/${id}/similar`, {
     headers: {
       "Content-Type": "application/json",
@@ -179,36 +176,29 @@ export const getSimilarMovies = async (args) => {
   return data;
 };
 
-export const getTrendingMovies = (args, page) => {
+export const getTrendingMovies = async (args, page) => {
   const [, timeWindowPart] = args.queryKey;
   const { timeWindow } = timeWindowPart;
-  return fetch(
-    `https://api.themoviedb.org/3/trending/movie/${timeWindow}?api_key=${apiKey}&language=en-U&page=${page}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const response = await fetch(`${baseUrl}/movies/trending/${timeWindow}/?page=${page}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
-export const getMoviesByKeyword = (keyword, page) => {
-  return fetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-U&query=${keyword}&page=${page}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+export const getMoviesByKeyword = async (keyword, page) => {
+  const response = await fetch(`${baseUrl}/movies/search/${keyword}/?page=${page}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    method: "get",
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getFavorites = async () => {

@@ -43,30 +43,28 @@ const App = () => {
           <AuthContextProvider>
             <SiteHeader />
             <Routes>
-              <Route path="/reviews/form" element={<AddMovieReviewPage />} />
-              <Route
-                path="/movies/favorites"
-                element={<FavoriteMoviesPage />}
-              />
+              
+              <Route element={<ProtectedRoutes />}>
+                <Route
+                  path="/movies/favorites"
+                  element={<FavoriteMoviesPage />}
+                />
+                <Route path="/reviews/:id" element={<MovieReviewPage />} />
+                <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+                <Route path="/movies/:id" element={<MoviePage />} />
+                <Route path="/actors/:id" element={<ActorPage />} />
+                <Route path="/search/:keyword" element={<SearchResultPage />} />
+              </Route>
+
               <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
               <Route
                 path="/movies/trending/:timeWindow"
                 element={<TrendingMoviesPage />}
               />
-              <Route element={<ProtectedRoutes />}>
-                <Route path="/reviews/:id" element={<MovieReviewPage />} />
-                <Route path="/movies/:id" element={<MoviePage />} />
-                <Route path="/actors/:id" element={<ActorPage />} />
-              </Route>
-              {/* <Route path="/signup" element={<SignUpWithEmail />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/user" element={<UserProfile />} />
-              <Route path="/password/reset" element={<PasswordReset />} /> */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/reset" element={<PasswordResetPage />} />
               <Route path="/user" element={<UserProfilePage />} />
-              <Route path="/search/:keyword" element={<SearchResultPage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

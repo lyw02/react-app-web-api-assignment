@@ -30,9 +30,8 @@ const PasswordResetPage = props => {
       alert(message);
     }
     if (validPassword && password === passwordAgain) {
-      let resetStatus = await context.resetPassword(userName, password);
+      await context.resetPassword(userName, password);
       setIsReset(true);
-      resetStatus ? alert("Reset suscess") : alert("Reset failed");
     }
   }
 

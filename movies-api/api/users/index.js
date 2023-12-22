@@ -125,10 +125,11 @@ router.post(
 router.put("/:id", async (req, res) => {
   const saltRounds = 10;
   const hash = await bcrypt.hash(req.body.password, saltRounds);
-  const result = await User.updateOne({
-    username: req.body.username,
-    password: hash,
-  });
+  const result = await User.findOneAndUpdate(
+    { username: req.body.username },
+    { $set: { password: hash } },
+    { new: true }
+  );
   if (result.matchedCount) {
     res.status(200).json({ code: 200, msg: "User Updated Sucessfully" });
   } else {
